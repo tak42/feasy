@@ -8,7 +8,8 @@
 ```bash
 npm install
 ```
-next, run the development server:
+
+Next, run the development server:
 
 ```bash
 npm run dev
