@@ -12,7 +12,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-If the server fails to start, command the folloing commands.
+If the server fails to start, command the following commands.
 
 ```bash
 npm install -g npm-run-all
