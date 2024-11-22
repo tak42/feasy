@@ -4,6 +4,9 @@ const btnStyle: Styles = [
   { property: 'width', value: '100px' },
   { property: 'height', value: '50px' },
   { property: 'color', value: 'red' },
+  { property: 'position', value: 'absolute' },
+  { property: 'top', value: '100px' },
+  { property: 'left', value: '100px' },
 ];
 
 const iframeStyle: Styles = [
