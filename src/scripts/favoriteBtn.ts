@@ -19,15 +19,15 @@ const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
   });
 };
 
-const setDisplayIframe = (child: HTMLElement) => {
-  document.body.appendChild(child);
+const showIframe = () => {
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://www.mouse-jp.co.jp/';
+  setStyle(iframe, iframeStyle);
+  document.body.appendChild(iframe);
 };
 
 const btn = document.createElement('button');
-const iframe = document.createElement('iframe');
 btn.innerText = 'iframe 表示';
-iframe.src = 'https://www.mouse-jp.co.jp/';
 setStyle(btn, btnStyle);
-setStyle(iframe, iframeStyle);
-btn.addEventListener('click', () => setDisplayIframe(iframe));
+btn.addEventListener('click', showIframe);
 document.body.appendChild(btn);
