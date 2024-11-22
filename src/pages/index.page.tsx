@@ -1,3 +1,4 @@
+import { IframeHideBtn } from '../scripts/iframeHideBtn';
 import styles from './index.module.css';
 
 const Home = () => {
@@ -7,7 +8,6 @@ const Home = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code} style={{ backgroundColor: '#fafafa' }}>
@@ -15,6 +15,7 @@ const Home = () => {
           </code>
         </p>
 
+        <IframeHideBtn />
         <div className={styles.grid}>
           <a className={styles.card} href="https://nextjs.org/docs">
             <h2>Documentation &rarr;</h2>
