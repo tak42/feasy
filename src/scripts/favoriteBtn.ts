@@ -1,6 +1,7 @@
 type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
 
 const localhostUrl = 'http://localhost:3000';
+const containerId = 'iframeContainer';
 
 const btnStyle: Styles = [
   { property: 'width', value: '100px' },
@@ -11,11 +12,18 @@ const btnStyle: Styles = [
   { property: 'left', value: '100px' },
 ];
 
-const iframeStyle: Styles = [
+const containerStyle: Styles = [
+  { property: 'height', value: '800px' },
+  { property: 'width', value: '600px' },
   { property: 'position', value: 'absolute' },
   { property: 'top', value: '50%' },
   { property: 'left', value: '50%' },
   { property: 'transform', value: 'translate(-50%, -50%)' },
+];
+
+const iframeStyle: Styles = [
+  { property: 'height', value: '100%' },
+  { property: 'width', value: '100%' },
 ];
 
 const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
@@ -25,15 +33,30 @@ const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
 };
 
 const showIframe = () => {
+  const container = document.getElementById(containerId);
   const iframe = document.createElement('iframe');
   iframe.src = localhostUrl;
   iframe.sandbox.value = 'allow-scripts allow-same-origin';
   setStyle(iframe, iframeStyle);
-  document.body.appendChild(iframe);
+  container?.appendChild(iframe);
 };
 
+const hideIframe = () => {
+  const container = document.getElementById(containerId);
+  const iframe = container?.querySelector('iframe');
+  if (iframe) container?.removeChild(iframe);
+};
+
+window.addEventListener('message', (event) => {
+  if (event.origin === localhostUrl) hideIframe();
+});
+
 const btn = document.createElement('button');
+const container = document.createElement('div');
 btn.innerText = 'iframe 表示';
+container.id = containerId;
 setStyle(btn, btnStyle);
+setStyle(container, containerStyle);
 btn.addEventListener('click', showIframe);
 document.body.appendChild(btn);
+document.body.appendChild(container);
