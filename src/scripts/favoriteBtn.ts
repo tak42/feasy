@@ -1,5 +1,7 @@
 type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
 
+const localhostUrl = 'http://localhost:3000';
+
 const btnStyle: Styles = [
   { property: 'width', value: '100px' },
   { property: 'height', value: '50px' },
@@ -24,7 +26,8 @@ const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
 
 const showIframe = () => {
   const iframe = document.createElement('iframe');
-  iframe.src = 'https://www.mouse-jp.co.jp/';
+  iframe.src = localhostUrl;
+  iframe.sandbox.value = 'allow-scripts allow-same-origin';
   setStyle(iframe, iframeStyle);
   document.body.appendChild(iframe);
 };
