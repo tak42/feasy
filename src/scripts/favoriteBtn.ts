@@ -1,7 +1,8 @@
 type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
 
 const localhostUrl = 'http://localhost:3000';
-const containerId = 'iframeContainer';
+const uuid = crypto.randomUUID();
+const containerId = `feasy_iframeContainer_${uuid}`;
 
 const btnStyle: Styles = [
   { property: 'width', value: '100px' },
