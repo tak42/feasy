@@ -1,4 +1,4 @@
-import { IframeHideBtn } from '../scripts/iframeHideBtn';
+import { IframeHideBtn } from '../scripts/IframeHideBtn';
 import styles from './index.module.css';
 
 const Home = () => {
