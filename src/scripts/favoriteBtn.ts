@@ -1,8 +1,6 @@
 type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
 
 const localhostUrl = 'http://localhost:3000';
-const uuid = crypto.randomUUID();
-const containerId = `feasy_iframeContainer_${uuid}`;
 
 const btnStyle: Styles = [
   { property: 'width', value: '100px' },
@@ -34,18 +32,16 @@ const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
 };
 
 const showIframe = () => {
-  const container = document.getElementById(containerId);
   const iframe = document.createElement('iframe');
   iframe.src = localhostUrl;
   iframe.sandbox.value = 'allow-scripts allow-same-origin';
   setStyle(iframe, iframeStyle);
-  container?.appendChild(iframe);
+  container.appendChild(iframe);
 };
 
 const hideIframe = () => {
-  const container = document.getElementById(containerId);
-  const iframe = container?.querySelector('iframe');
-  if (iframe) container?.removeChild(iframe);
+  const iframe = container.querySelector('iframe');
+  if (iframe) container.removeChild(iframe);
 };
 
 window.addEventListener('message', (event) => {
@@ -55,7 +51,6 @@ window.addEventListener('message', (event) => {
 const btn = document.createElement('button');
 const container = document.createElement('div');
 btn.innerText = 'iframe 表示';
-container.id = containerId;
 setStyle(btn, btnStyle);
 setStyle(container, containerStyle);
 btn.addEventListener('click', showIframe);
