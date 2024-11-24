@@ -1,0 +1,8 @@
+.hideBtn {
+  width: 200px;
+  height: 100px;
+  font-size: 18px;
+  background-color: palegreen;
+  border: none;
+  border-radius: 25px;
+}
