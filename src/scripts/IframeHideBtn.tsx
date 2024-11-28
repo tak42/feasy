@@ -1,7 +1,12 @@
 import styles from './index.module.css';
+import type { PostData } from './Post.type';
 
 const hideIframe = () => {
-  window.parent.postMessage('hide', '*');
+  const postData: PostData = {
+    action: 'hide',
+    contents: [],
+  };
+  window.parent.postMessage(postData, '*');
 };
 
 export const IframeHideBtn = () => {
