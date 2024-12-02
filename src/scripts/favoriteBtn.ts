@@ -62,33 +62,33 @@ const hideIframe = () => {
   if (iframe) container.removeChild(iframe);
 };
 
-const targetInputs = [
+const combineIdentifiers = [
   {
-    name: 'q1',
+    id: 'q1',
     kind: 'name',
   },
   {
-    name: 'q2',
+    id: 'q2',
     kind: 'email',
   },
   {
-    name: 'q5',
+    id: 'q5',
     kind: 'old',
   },
 ];
 
 const searchTargetInputs = () => {
   return Array.from(document.getElementsByTagName('input')).filter((elm) =>
-    targetInputs.some((val) => val.name === elm.name)
+    combineIdentifiers.some((val) => val.id === elm.id)
   );
 };
 
 const shareForm = (contents: PostContents) => {
   const inputElms: HTMLInputElement[] = searchTargetInputs();
   if (!inputElms.length) return false;
-  targetInputs.forEach((input) => {
-    const content = contents.find(({ kind }) => kind === input.kind);
-    inputElms.filter(({ name }) => name === input.name)[0].value = content ? content.value : '';
+  combineIdentifiers.forEach((val) => {
+    const content = contents.find(({ kind }) => kind === val.kind);
+    inputElms.filter(({ id }) => id === val.id)[0].value = content ? content.value : '';
   });
   hideIframe();
 };
