@@ -58,8 +58,7 @@ const showIframe = () => {
 };
 
 const hideIframe = () => {
-  const iframe = container.querySelector('iframe');
-  if (iframe) container.removeChild(iframe);
+  document.body.removeChild(container);
 };
 
 const combineIdentifiers = [
