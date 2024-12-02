@@ -29,18 +29,18 @@ const btnStyle: Styles = [
 ];
 
 const containerStyle: Styles = [
-  { property: 'height', value: '800px' },
-  { property: 'width', value: '600px' },
+  { property: 'height', value: '50%' },
+  { property: 'width', value: '50%' },
   { property: 'position', value: 'absolute' },
   { property: 'top', value: '50%' },
   { property: 'left', value: '50%' },
   { property: 'transform', value: 'translate(-50%, -50%)' },
-  { property: 'backgroundColor', value: 'white' },
 ];
 
 const iframeStyle: Styles = [
   { property: 'height', value: '100%' },
   { property: 'width', value: '100%' },
+  { property: 'background', value: 'white' },
 ];
 
 const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
