@@ -37,6 +37,11 @@ const containerStyle: Styles = [
   { property: 'transform', value: 'translate(-50%, -50%)' },
 ];
 
+const containerHideStyle: Styles = [
+  { property: 'height', value: '0' },
+  { property: 'width', value: '0' },
+];
+
 const iframeStyle: Styles = [
   { property: 'height', value: '100%' },
   { property: 'width', value: '100%' },
@@ -64,7 +69,7 @@ const showIframe = () => {
 };
 
 const hideIframe = () => {
-  document.body.removeChild(container);
+  setStyle(container, containerHideStyle);
 };
 
 const combineIdentifiers: { id: string; kind: keyof PostContent }[] = [
