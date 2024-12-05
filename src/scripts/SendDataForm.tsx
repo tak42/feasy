@@ -9,23 +9,16 @@ export const SendDataForm = () => {
   const toShare = () => {
     const postData: PostData = {
       action: 'share',
-      contents: [
-        {
-          kind: 'name',
-          value: name,
-        },
-        {
-          kind: 'email',
-          value: email,
-        },
-        {
-          kind: 'old',
-          value: old,
-        },
-      ],
+      content: {
+        name,
+        email,
+        old,
+      },
     };
+
     window.parent.postMessage(postData, '*');
   };
+
   return (
     <div className={styles.container}>
       <p className={styles.spaceY} />

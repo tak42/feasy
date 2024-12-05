@@ -4,8 +4,13 @@ import type { PostData } from './Post.type';
 const hideIframe = () => {
   const postData: PostData = {
     action: 'hide',
-    contents: [],
+    content: {
+      name: '',
+      email: '',
+      old: '',
+    },
   };
+
   window.parent.postMessage(postData, '*');
 };
 

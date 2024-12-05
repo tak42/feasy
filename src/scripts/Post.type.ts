@@ -1,9 +1,8 @@
 export type PostData = {
   action: 'hide' | 'share';
-  contents:
-    | {
-        kind: string;
-        value: string;
-      }[]
-    | [];
+  content: {
+    name: string;
+    email: string;
+    old: string;
+  };
 };
