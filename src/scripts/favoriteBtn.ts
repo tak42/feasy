@@ -1,18 +1,18 @@
 type PostActions = 'hide' | 'share';
 
-type PostContents = {
-  kind: string;
-  value: string;
-}[];
+type PostContent = {
+  name: string;
+  email: string;
+  old: string;
+};
 
 type PostData = {
   action: PostActions;
-  contents: PostContents;
+  content: PostContent;
 };
 
 type PostFunc = {
-  action: PostActions;
-  func: (contents: PostContents) => void;
+  [key in PostActions]: (content: PostContent) => void;
 };
 
 type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
@@ -50,10 +50,16 @@ const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
 };
 
 const showIframe = () => {
+  setStyle(container, containerStyle);
+
+  if (container.querySelector('iframe')) return;
+
   const iframe = document.createElement('iframe');
+
   iframe.src = LOCALHOST_URL;
   iframe.sandbox.value = 'allow-scripts allow-same-origin';
   setStyle(iframe, iframeStyle);
+
   container.appendChild(iframe);
 };
 
@@ -61,7 +67,7 @@ const hideIframe = () => {
   document.body.removeChild(container);
 };
 
-const combineIdentifiers = [
+const combineIdentifiers: { id: string; kind: keyof PostContent }[] = [
   {
     id: 'q1',
     kind: 'name',
@@ -76,39 +82,39 @@ const combineIdentifiers = [
   },
 ];
 
-const searchTargetInputs = () => {
-  return Array.from(document.getElementsByTagName('input')).filter((elm) =>
-    combineIdentifiers.some((val) => val.id === elm.id)
-  );
-};
+const shareForm = (content: PostContent) => {
+  const inputElms = Array.from(document.getElementsByTagName('input'));
 
-const shareForm = (contents: PostContents) => {
-  const inputElms: HTMLInputElement[] = searchTargetInputs();
-  if (!inputElms.length) return false;
   combineIdentifiers.forEach((val) => {
-    const content = contents.find(({ kind }) => kind === val.kind);
-    inputElms.filter(({ id }) => id === val.id)[0].value = content ? content.value : '';
+    const elm = inputElms.find(({ id }) => id === val.id);
+
+    if (!elm) return;
+
+    elm.value = content[val.kind];
   });
+
   hideIframe();
 };
 
-const iframePostActions: PostFunc[] = [
-  { action: 'hide', func: hideIframe },
-  { action: 'share', func: shareForm },
-];
+const iframePostActions: PostFunc = {
+  hide: hideIframe,
+  share: shareForm,
+};
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== LOCALHOST_URL) return false;
+  if (event.origin !== LOCALHOST_URL) return;
+
   const postData: PostData = event.data;
-  const actionFunc = iframePostActions.filter((val) => val.action === postData.action);
-  actionFunc[0].func(postData.contents);
+
+  iframePostActions[postData.action](postData.content);
 });
 
 const btn = document.createElement('button');
 const container = document.createElement('div');
+
 btn.innerText = 'iframe 表示';
 setStyle(btn, btnStyle);
-setStyle(container, containerStyle);
 btn.addEventListener('click', showIframe);
+
 document.body.appendChild(btn);
 document.body.appendChild(container);
