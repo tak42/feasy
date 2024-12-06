@@ -20,12 +20,12 @@ type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
 const LOCALHOST_URL = 'http://localhost:3000';
 
 const btnStyle: Styles = [
-  { property: 'width', value: '150px' },
-  { property: 'height', value: '50px' },
+  { property: 'width', value: '160px' },
+  { property: 'height', value: '56px' },
   { property: 'color', value: 'red' },
   { property: 'position', value: 'absolute' },
-  { property: 'top', value: '20%' },
-  { property: 'left', value: '100px' },
+  { property: 'top', value: '160px' },
+  { property: 'left', value: '80px' },
 ];
 
 const containerStyle: Styles = [
