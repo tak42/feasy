@@ -1,8 +1,36 @@
 .hideBtn {
-  width: 200px;
-  height: 100px;
-  font-size: 18px;
+  width: 240px;
+  height: 80px;
+  font-size: 24px;
+  cursor: pointer;
   background-color: palegreen;
   border: none;
-  border-radius: 25px;
+  border-radius: 24px;
+}
+
+.shareBtn {
+  width: 192px;
+  height: 32px;
+  cursor: pointer;
+  background-color: steelblue;
+  border: none;
+  border-radius: 8px;
+}
+
+.basicInput {
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  font-size: 24px;
+  border: 1px blue solid;
+  border-radius: 8px;
+}
+
+.spaceY {
+  height: 32px;
+  margin: 0;
+}
+
+.container {
+  width: 640px;
 }
