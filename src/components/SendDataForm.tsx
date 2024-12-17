@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { PostData } from './Post.type';
+import type { PostData } from '../types/Post.type';
 import styles from './index.module.css';
 
 export const SendDataForm = () => {

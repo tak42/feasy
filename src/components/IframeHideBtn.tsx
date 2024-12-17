@@ -1,7 +1,7 @@
+import type { PostData } from '../types/Post.type';
 import styles from './index.module.css';
-import type { PostData } from './Post.type';
 
-const hideIframe = () => {
+const postHideIframe = () => {
   const postData: PostData = {
     action: 'hide',
     content: {
@@ -17,7 +17,7 @@ const hideIframe = () => {
 export const IframeHideBtn = () => {
   return (
     <div>
-      <button onClick={hideIframe} className={styles.hideBtn}>
+      <button onClick={postHideIframe} className={styles.hideBtn}>
         Iframe 非表示
       </button>
     </div>
