@@ -1,14 +1,10 @@
+import styles from '../styles/form.module.css';
 import type { PostData } from '../types/Post.type';
-import styles from './index.module.css';
 
 const postHideIframe = () => {
   const postData: PostData = {
     action: 'hide',
-    content: {
-      name: '',
-      email: '',
-      old: '',
-    },
+    content: [],
   };
 
   window.parent.postMessage(postData, '*');

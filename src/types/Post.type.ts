@@ -1,20 +1,17 @@
-type PostActions = 'hide' | 'share';
+type PostActions = 'hide' | 'share' | 'check';
 
-export type PostContent = {
-  name: string;
-  email: string;
-  old: string;
+type SharedCombination = { id: string; value: string };
+
+export type CombinationOrigins = {
+  [key: string]: SharedCombination[];
 };
 
+// PostDataのコンテンツはオリジンのキーから抽出した組み合わせを格納する
 export type PostData = {
   action: PostActions;
-  content: {
-    name: string;
-    email: string;
-    old: string;
-  };
+  content: SharedCombination[];
 };
 
 export type PostFunc = {
-  [key in PostActions]: (content: PostContent) => void;
+  [key in PostActions]: (event: MessageEvent) => void;
 };
