@@ -1,17 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from '../styles/form.module.css';
 import type { CombinationOrigins, PostData } from '../types/Post.type';
 
 const allowedOrigins = ['https://form.cao.go.jp'];
-
-/*
-設定値を配列に追加するだけで対応可能なものにする
-設定値: feasyをIframeで表示している親サイトのOrigin
-配列: オリジンをキーにした連想配列
-
-オリジンと設定値を格納した連想配列のキーの整合性を担保する
-型として設定する？
-*/
 
 export const SendDataForm = () => {
   const [name, setName] = useState('');
@@ -37,33 +28,24 @@ export const SendDataForm = () => {
     };
   }, [name, email, old]);
 
-  const searchCombination = useCallback(
-    (origin: string) => {
-      return combineIdentifiers[origin];
-    },
-    [combineIdentifiers]
-  );
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
 
-  const toShare = useCallback(
-    (origin: string) => {
       const postData: PostData = {
         action: 'share',
-        content: searchCombination(origin),
+        content: combineIdentifiers[event.data],
       };
 
       window.parent.postMessage(postData, '*');
-    },
-    [searchCombination]
-  );
+    };
 
-  useEffect(() => {
-    window.addEventListener('message', (event) => {
-      if (!allowedOrigins.some((origin) => origin === event.data))
-        return alert('このオリジンは許可されていません。');
+    window.addEventListener('message', handleMessage);
 
-      toShare(event.data);
-    });
-  }, [toShare]);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [combineIdentifiers]);
 
   const originCheck = () => {
     const postData: PostData = {
