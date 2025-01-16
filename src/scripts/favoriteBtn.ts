@@ -76,7 +76,7 @@ const shareForm = (event: MessageEvent) => {
 const originCheck = (event: MessageEvent) => {
   if (!event.source) return;
 
-  event.source.postMessage(window.location.origin, event.origin as WindowPostMessageOptions);
+  event.source.postMessage(window.location.origin, { targetOrigin: event.origin });
 };
 
 const iframePostActions: PostFunc = {
