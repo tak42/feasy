@@ -43,10 +43,6 @@ export const SendDataForm = () => {
     };
   }, [combineIdentifiers]);
 
-  const originCheck = () => {
-    toParentMessage('check', []);
-  };
-
   return (
     <div className={styles.container}>
       <p className={styles.spaceY} />
@@ -76,7 +72,7 @@ export const SendDataForm = () => {
       />
       <p className={styles.spaceY} />
       <div style={{ textAlign: 'right' }}>
-        <button onClick={originCheck} className={styles.shareBtn}>
+        <button onClick={() => toParentMessage('check', [])} className={styles.shareBtn}>
           データ共有
         </button>
       </div>
