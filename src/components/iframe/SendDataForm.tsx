@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { usePost } from '../hooks/Post';
-import styles from '../styles/form.module.css';
-import type { CombinationOrigins } from '../types/Post.type';
+import type { CombinationOrigins } from '../../types/Post.type';
+import styles from './styles/form.module.css';
+import { toParentMessage } from './utils/Post';
 
 const allowedOrigins = ['https://form.cao.go.jp'];
 
@@ -9,7 +9,6 @@ export const SendDataForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [old, setOld] = useState('');
-  const postHook = usePost();
 
   const combineIdentifiers: CombinationOrigins = useMemo(() => {
     return {
@@ -34,7 +33,7 @@ export const SendDataForm = () => {
     const handleMessage = (event: MessageEvent) => {
       if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
 
-      postHook.toParentMessage('share', combineIdentifiers[event.data]);
+      toParentMessage('share', combineIdentifiers[event.data]);
     };
 
     window.addEventListener('message', handleMessage);
@@ -42,10 +41,10 @@ export const SendDataForm = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [combineIdentifiers, postHook]);
+  }, [combineIdentifiers]);
 
   const originCheck = () => {
-    postHook.toParentMessage('check', []);
+    toParentMessage('check', []);
   };
 
   return (
