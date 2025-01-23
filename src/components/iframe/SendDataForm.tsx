@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { CombinationOrigins } from '../../types/Post.type';
 import styles from './styles/form.module.css';
-import { toParentMessage } from './utils/Post';
+import { SendPostMessageToParent } from './utils/Post';
 
 const allowedOrigins = ['https://form.cao.go.jp'];
 
@@ -33,7 +33,7 @@ export const SendDataForm = () => {
     const handleMessage = (event: MessageEvent) => {
       if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
 
-      toParentMessage('share', combineIdentifiers[event.data]);
+      SendPostMessageToParent('share', combineIdentifiers[event.data]);
     };
 
     window.addEventListener('message', handleMessage);
@@ -72,7 +72,7 @@ export const SendDataForm = () => {
       />
       <p className={styles.spaceY} />
       <div style={{ textAlign: 'right' }}>
-        <button onClick={() => toParentMessage('check', [])} className={styles.shareBtn}>
+        <button onClick={() => SendPostMessageToParent('check', [])} className={styles.shareBtn}>
           データ共有
         </button>
       </div>
