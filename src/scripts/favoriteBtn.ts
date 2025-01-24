@@ -55,6 +55,12 @@ const showIframe = () => {
 };
 
 const hideIframe = () => {
+  const iframe = container.querySelector('iframe');
+
+  if (!iframe) return;
+
+  container.removeChild(iframe);
+
   setStyle(container, containerHideStyle);
 };
 
