@@ -1,14 +1,14 @@
 export type PostActions = 'hide' | 'share' | 'check';
 
-export type SharedCombination = { id: string; value: string };
+export type CombinationVal = { id: string; value: string };
 
-export type CombinationOrigins = {
-  [key: string]: SharedCombination[];
+export type CombinationOriginVal = {
+  [key: string]: CombinationVal[];
 };
 
 export type PostData = {
   action: PostActions;
-  content: SharedCombination[];
+  content: CombinationVal[];
 };
 
 export type PostFunc = {

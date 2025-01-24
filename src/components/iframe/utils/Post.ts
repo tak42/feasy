@@ -1,5 +1,5 @@
-import type { PostActions, SharedCombination } from '../../../types/Post.type';
+import type { CombinationVal, PostActions } from '../../../types/Post.type';
 
-export const postMessageToParent = (action: PostActions, content: SharedCombination[]) => {
+export const postMessageToParent = (action: PostActions, content: CombinationVal[]) => {
   window.parent.postMessage({ action, content }, '*');
 };

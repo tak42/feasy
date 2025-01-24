@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { CombinationOrigins } from '../../types/Post.type';
+import type { CombinationOriginVal } from '../../types/Post.type';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
@@ -10,7 +10,7 @@ export const SendDataForm = () => {
   const [email, setEmail] = useState('');
   const [old, setOld] = useState('');
 
-  const combineIdentifiers: CombinationOrigins = useMemo(() => {
+  const combineIdentifiers: CombinationOriginVal = useMemo(() => {
     return {
       [allowedOrigins[0]]: [
         {
