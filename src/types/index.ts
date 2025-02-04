@@ -5,7 +5,7 @@ export type AllowedOrigins = typeof allowedOrigins;
 type SupportedValue = (typeof supportedValue)[number];
 
 export type TransferValue = {
-  SpecifiedId: string;
+  specifiedId: string;
   sourceValue: string | number;
 };
 export type SupportedValueTypes = Record<SupportedValue, TransferValue>;
