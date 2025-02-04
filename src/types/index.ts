@@ -2,7 +2,7 @@ import type { allowedOrigins, supportedValue } from '../const';
 
 export type AllowedOrigins = typeof allowedOrigins;
 
-type SupportedValue = (typeof supportedValue)[number];
+export type SupportedValue = (typeof supportedValue)[number];
 
 export type TransferValue = {
   specifiedId: string;
