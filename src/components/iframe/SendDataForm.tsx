@@ -1,76 +1,55 @@
-import { useEffect, useMemo, useState } from 'react';
-import type { CombinationOriginVal } from '../../types/Post.type';
+import React, { useState } from 'react';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
-const allowedOrigins = ['https://form.cao.go.jp'];
-
 export const SendDataForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [old, setOld] = useState('');
+  // useEffect(() => {
+  //   const handleMessage = (event: MessageEvent) => {
+  //     if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
 
-  const combineIdentifiers: CombinationOriginVal = useMemo(() => {
-    return {
-      [allowedOrigins[0]]: [
-        {
-          id: 'q1',
-          value: name,
-        },
-        {
-          id: 'q2',
-          value: email,
-        },
-        {
-          id: 'q5',
-          value: old,
-        },
-      ],
-    };
-  }, [name, email, old]);
+  //     postMessageToParent('share', combineIdentifiers[event.data]);
+  //   };
 
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
+  //   window.addEventListener('message', handleMessage);
 
-      postMessageToParent('share', combineIdentifiers[event.data]);
+  //   return () => {
+  //     window.removeEventListener('message', handleMessage);
+  //   };
+  // }, []);
+
+  // type DynamicState<T> = { [key: string]: T };
+
+  const useDynamicForm = (initialVal: { [key: string]: string }) => {
+    const [form, setForm] = useState(initialVal);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    window.addEventListener('message', handleMessage);
+    return { form, handleChange };
+  };
 
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [combineIdentifiers]);
+  const SupportedValueInput = (key: string) => {
+    const { form, handleChange } = useDynamicForm({
+      key: '',
+    });
+    return (
+      <input title={key} className={styles.basicInput} value={form[key]} onChange={handleChange} />
+    );
+  };
 
+  // 型から入力フィールドを自動で生成させる
   return (
     <div className={styles.container}>
-      <p className={styles.spaceY} />
-      <input
-        title="氏名"
-        className={styles.basicInput}
-        placeholder="富士 太郎"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <p className={styles.spaceY} />
-      <input
-        title="メールアドレス"
-        className={styles.basicInput}
-        placeholder="mail@co.jp"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <p className={styles.spaceY} />
-      <input
-        title="年齢"
-        className={styles.basicInput}
-        placeholder="20"
-        value={old}
-        type="number"
-        onChange={(e) => setOld(e.target.value)}
-      />
-      <p className={styles.spaceY} />
+      {['famiryName', 'firstName'].map((key) => {
+        return (
+          <>
+            <p className={styles.spaceY} />
+            {SupportedValueInput(key)}
+            <p className={styles.spaceY} />
+          </>
+        );
+      })}
       <div style={{ textAlign: 'right' }}>
         <button onClick={() => postMessageToParent('check', [])} className={styles.shareBtn}>
           データ共有
