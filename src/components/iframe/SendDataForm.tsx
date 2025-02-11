@@ -4,6 +4,7 @@ import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
 export const SendDataForm = () => {
+  type InputSettings = { [key in SupportedValue]: string };
   const supportedValList: SupportedValue[] = [
     'famiryName',
     'firstName',
@@ -14,7 +15,7 @@ export const SendDataForm = () => {
     'business',
   ];
 
-  const labelName: { [key in SupportedValue]: string } = {
+  const labelValues: InputSettings = {
     famiryName: '姓',
     firstName: '名',
     email: 'メールアドレス',
@@ -22,6 +23,16 @@ export const SendDataForm = () => {
     business: '会社名',
     old: '年齢',
     gender: '性別',
+  };
+
+  const placeholderSettings: InputSettings = {
+    famiryName: '富士',
+    firstName: '太郎',
+    email: 'mail@co.jp',
+    tel: '999-9999-9999',
+    business: '(株)XXX社',
+    old: '99',
+    gender: '男性 or 女性',
   };
   // useEffect(() => {
   //   const handleMessage = (event: MessageEvent) => {
@@ -55,9 +66,10 @@ export const SendDataForm = () => {
     });
     return (
       <input
-        title={labelName[key]}
+        title={labelValues[key]}
         className={styles.basicInput}
         value={form[key]}
+        placeholder={placeholderSettings[key]}
         onChange={handleChange}
       />
     );
@@ -68,11 +80,14 @@ export const SendDataForm = () => {
     <div className={styles.container}>
       {supportedValList.map((key) => {
         return (
-          <>
-            <p className={styles.spaceY} />
-            {SupportedValueInput(key)}
-            <p className={styles.spaceY} />
-          </>
+          <div style={{ width: '100%' }} key={key}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ textAlign: 'left', width: '160px', color: 'blue', fontWeight: 'bold' }}>
+                <label>{labelValues[key]}</label>
+              </div>
+              {SupportedValueInput(key)}
+            </div>
+          </div>
         );
       })}
       <div style={{ textAlign: 'right' }}>
