@@ -1,8 +1,28 @@
 import React, { useState } from 'react';
+import type { SupportedValue } from '../../types';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
 export const SendDataForm = () => {
+  const supportedValList: SupportedValue[] = [
+    'famiryName',
+    'firstName',
+    'old',
+    'gender',
+    'tel',
+    'email',
+    'business',
+  ];
+
+  const labelName: { [key in SupportedValue]: string } = {
+    famiryName: '姓',
+    firstName: '名',
+    email: 'メールアドレス',
+    tel: '電話番号',
+    business: '会社名',
+    old: '年齢',
+    gender: '性別',
+  };
   // useEffect(() => {
   //   const handleMessage = (event: MessageEvent) => {
   //     if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
@@ -29,19 +49,24 @@ export const SendDataForm = () => {
     return { form, handleChange };
   };
 
-  const SupportedValueInput = (key: string) => {
+  const SupportedValueInput = (key: SupportedValue) => {
     const { form, handleChange } = useDynamicForm({
       key: '',
     });
     return (
-      <input title={key} className={styles.basicInput} value={form[key]} onChange={handleChange} />
+      <input
+        title={labelName[key]}
+        className={styles.basicInput}
+        value={form[key]}
+        onChange={handleChange}
+      />
     );
   };
 
   // 型から入力フィールドを自動で生成させる
   return (
     <div className={styles.container}>
-      {['famiryName', 'firstName'].map((key) => {
+      {supportedValList.map((key) => {
         return (
           <>
             <p className={styles.spaceY} />
