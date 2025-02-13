@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
-import { supportedValues } from '../../const';
-import type { SupportedValueKeys } from '../../types';
+import React, { useEffect, useState } from 'react';
+import { allowedOrigins, supportedValues } from '../../const';
+import type { SupportedValue, SupportedValueKeys } from '../../types';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
-export const SendDataForm = () => {
-  type InputSettings = { [key in SupportedValueKeys]: string };
+const useDynamicForm = (initialVal: { [key in SupportedValueKeys]: string }) => {
+  const [form, setForm] = useState(initialVal);
 
-  const labelValues: InputSettings = {
+  const handleChange = (key: SupportedValueKeys, e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [key]: e.target.value }));
+  };
+
+  return { form, handleChange };
+};
+
+// ブラウザに保存した値を使用する
+const initialValues: SupportedValue = {
+  famiryName: '',
+  firstName: '',
+  email: '',
+  tel: '',
+  business: '',
+  old: '',
+  gender: '',
+};
+
+export const SendDataForm = () => {
+  const { form, handleChange } = useDynamicForm(initialValues);
+
+  const labelValues: SupportedValue = {
     famiryName: '姓',
     firstName: '名',
     email: 'メールアドレス',
@@ -16,7 +37,7 @@ export const SendDataForm = () => {
     old: '年齢',
     gender: '性別',
   };
-  const placeholderSettings: InputSettings = {
+  const placeholderSettings: SupportedValue = {
     famiryName: '富士',
     firstName: '太郎',
     email: 'mail@co.jp',
@@ -26,45 +47,20 @@ export const SendDataForm = () => {
     gender: '男性 or 女性',
   };
 
-  // useEffect(() => {
-  //   const handleMessage = (event: MessageEvent) => {
-  //     if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
+  // どうやってサイト固有設定から適したものを特定して、入力データを親ページに送るか
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
 
-  //     postMessageToParent('share', combineIdentifiers[event.data]);
-  //   };
-
-  //   window.addEventListener('message', handleMessage);
-
-  //   return () => {
-  //     window.removeEventListener('message', handleMessage);
-  //   };
-  // }, []);
-
-  const useDynamicForm = (initialVal: { [key: string]: string }) => {
-    const [form, setForm] = useState(initialVal);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      // postMessageToParent('share', combineIdentifiers[event.data]);
     };
 
-    return { form, handleChange };
-  };
+    window.addEventListener('message', handleMessage);
 
-  const SupportedValueInput = (key: SupportedValueKeys) => {
-    const { form, handleChange } = useDynamicForm({
-      key: '',
-    });
-
-    return (
-      <input
-        title={labelValues[key]}
-        className={styles.basicInput}
-        value={form[key]}
-        placeholder={placeholderSettings[key]}
-        onChange={handleChange}
-      />
-    );
-  };
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -75,7 +71,13 @@ export const SendDataForm = () => {
               <div style={{ textAlign: 'left', width: '160px', color: 'blue', fontWeight: 'bold' }}>
                 <label>{labelValues[key]}</label>
               </div>
-              {SupportedValueInput(key)}
+              <input
+                title={labelValues[key]}
+                className={styles.basicInput}
+                value={form[key]}
+                placeholder={placeholderSettings[key]}
+                onChange={(e) => handleChange(key, e)}
+              />
             </div>
           </div>
         );

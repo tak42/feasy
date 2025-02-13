@@ -1,11 +1,11 @@
 export const allowedOrigins = ['https://form.cao.go.jp', 'https://hoge.co.jp'] as const;
 
 export const supportedValues = [
-  'firstName',
   'famiryName',
+  'firstName',
   'email',
   'tel',
-  'business',
   'old',
   'gender',
+  'business',
 ] as const;
