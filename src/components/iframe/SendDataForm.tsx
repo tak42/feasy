@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { allowedOrigins, supportedValues } from '../../const';
+import { ALLOWED_ORIGINS, SUPPORTED_VALUES } from '../../const';
 import type { SupportedValue, SupportedValueKeys } from '../../types';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
@@ -50,7 +50,7 @@ export const SendDataForm = () => {
   // どうやってサイト固有設定から適したものを特定して、入力データを親ページに送るか
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
+      if (!ALLOWED_ORIGINS.includes(event.data)) return alert('このオリジンは許可されていません。');
 
       // postMessageToParent('share', combineIdentifiers[event.data]);
     };
@@ -64,7 +64,7 @@ export const SendDataForm = () => {
 
   return (
     <div className={styles.container}>
-      {supportedValues.map((key) => {
+      {SUPPORTED_VALUES.map((key) => {
         return (
           <div style={{ width: '100%' }} key={key}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
