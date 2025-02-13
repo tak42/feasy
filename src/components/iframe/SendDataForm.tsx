@@ -20,7 +20,7 @@ export const SendDataForm = () => {
     firstName: '名',
     email: 'メールアドレス',
     tel: '電話番号',
-    business: '会社名',
+    business: '職業',
     old: '年齢',
     gender: '性別',
   };
@@ -30,7 +30,7 @@ export const SendDataForm = () => {
     firstName: '太郎',
     email: 'mail@co.jp',
     tel: '999-9999-9999',
-    business: '(株)XXX社',
+    business: '会社員',
     old: '99',
     gender: '男性 or 女性',
   };
