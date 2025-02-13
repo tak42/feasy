@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import type { SupportedValue } from '../../types';
+import { supportedValues } from '../../const';
+import type { SupportedValueKeys } from '../../types';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
 export const SendDataForm = () => {
-  type InputSettings = { [key in SupportedValue]: string };
-  const supportedValList: SupportedValue[] = [
-    'famiryName',
-    'firstName',
-    'old',
-    'gender',
-    'tel',
-    'email',
-    'business',
-  ];
+  type InputSettings = { [key in SupportedValueKeys]: string };
 
   const labelValues: InputSettings = {
     famiryName: '姓',
@@ -24,7 +16,6 @@ export const SendDataForm = () => {
     old: '年齢',
     gender: '性別',
   };
-
   const placeholderSettings: InputSettings = {
     famiryName: '富士',
     firstName: '太郎',
@@ -34,6 +25,7 @@ export const SendDataForm = () => {
     old: '99',
     gender: '男性 or 女性',
   };
+
   // useEffect(() => {
   //   const handleMessage = (event: MessageEvent) => {
   //     if (!allowedOrigins.includes(event.data)) return alert('このオリジンは許可されていません。');
@@ -48,8 +40,6 @@ export const SendDataForm = () => {
   //   };
   // }, []);
 
-  // type DynamicState<T> = { [key: string]: T };
-
   const useDynamicForm = (initialVal: { [key: string]: string }) => {
     const [form, setForm] = useState(initialVal);
 
@@ -60,10 +50,11 @@ export const SendDataForm = () => {
     return { form, handleChange };
   };
 
-  const SupportedValueInput = (key: SupportedValue) => {
+  const SupportedValueInput = (key: SupportedValueKeys) => {
     const { form, handleChange } = useDynamicForm({
       key: '',
     });
+
     return (
       <input
         title={labelValues[key]}
@@ -75,10 +66,9 @@ export const SendDataForm = () => {
     );
   };
 
-  // 型から入力フィールドを自動で生成させる
   return (
     <div className={styles.container}>
-      {supportedValList.map((key) => {
+      {supportedValues.map((key) => {
         return (
           <div style={{ width: '100%' }} key={key}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -90,7 +80,7 @@ export const SendDataForm = () => {
           </div>
         );
       })}
-      <div style={{ textAlign: 'right' }}>
+      <div style={{ width: '100%', textAlign: 'right' }}>
         <button onClick={() => postMessageToParent('check', [])} className={styles.shareBtn}>
           データ共有
         </button>

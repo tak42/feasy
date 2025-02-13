@@ -1,11 +1,7 @@
-import type { allowedOrigins, supportedValue } from '../const';
+import type { allowedOrigins, supportedValues } from '../const';
 
 export type AllowedOrigins = typeof allowedOrigins;
 
-export type SupportedValue = (typeof supportedValue)[number];
+export type SupportedValue = Record<(typeof supportedValues)[number], string>;
 
-export type TransferValue = {
-  specifiedId: string;
-  sourceValue: string | number;
-};
-export type SupportedValueTypes = Record<SupportedValue, TransferValue>;
+export type SupportedValueKeys = keyof SupportedValue;
