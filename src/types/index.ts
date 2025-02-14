@@ -1,7 +1,14 @@
 import type { ALLOWED_ORIGINS, SUPPORTED_VALUES } from '../const';
+import type { CaoInputIds } from '../form/cao';
 
 export type AllowedOrigins = typeof ALLOWED_ORIGINS;
 
-export type SupportedValue = Record<(typeof SUPPORTED_VALUES)[number], string>;
+export type CombinedFormIds = CaoInputIds;
 
-export type SupportedValueKeys = keyof SupportedValue;
+// ここは関数の戻り値がオブジェクトになるようにする
+export type GenerateDtoFunc = Record<
+  AllowedOrigins[number],
+  (data: SupportedValue) => Record<CombinedFormIds, string>
+>;
+
+export type SupportedValue = Record<(typeof SUPPORTED_VALUES)[number], string>;
