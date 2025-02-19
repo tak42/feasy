@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ALLOWED_ORIGINS, SUPPORTED_VALUES } from '../../const';
-import type { SupportedValue, SupportedValueKeys } from '../../types';
+import { generateDtoFunc } from '../../form';
+import type { AllowedOrigins, SupportedValue } from '../../types';
 import styles from './styles/form.module.css';
 import { postMessageToParent } from './utils/Post';
 
-const useDynamicForm = (initialVal: { [key in SupportedValueKeys]: string }) => {
+const useDynamicForm = (initialVal: { [key in keyof SupportedValue]: string }) => {
   const [form, setForm] = useState(initialVal);
 
-  const handleChange = (key: SupportedValueKeys, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (key: keyof SupportedValue, e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
   };
 
@@ -50,9 +51,14 @@ export const SendDataForm = () => {
   // どうやってサイト固有設定から適したものを特定して、入力データを親ページに送るか
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (!ALLOWED_ORIGINS.includes(event.data)) return alert('このオリジンは許可されていません。');
+      const origin: AllowedOrigins[number] | undefined = event.data;
 
-      // postMessageToParent('share', combineIdentifiers[event.data]);
+      if (!origin) return alert(`無効なメッセージイベントのデータです。\n処理をキャンセルします。`);
+      if (!ALLOWED_ORIGINS.includes(origin)) return alert('このオリジンは許可されていません。');
+
+      const dto = generateDtoFunc[origin](form);
+
+      postMessageToParent('share', dto);
     };
 
     window.addEventListener('message', handleMessage);
@@ -60,7 +66,7 @@ export const SendDataForm = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+  }, [form]);
 
   return (
     <div className={styles.container}>
@@ -83,7 +89,7 @@ export const SendDataForm = () => {
         );
       })}
       <div style={{ width: '100%', textAlign: 'right' }}>
-        <button onClick={() => postMessageToParent('check', [])} className={styles.shareBtn}>
+        <button onClick={() => postMessageToParent('check', {})} className={styles.shareBtn}>
           データ共有
         </button>
       </div>
