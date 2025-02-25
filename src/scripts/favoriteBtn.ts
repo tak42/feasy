@@ -2,9 +2,10 @@ import type { PostData, PostFunc } from '../types/Post.type';
 
 const LOCALHOST_URL = 'http://localhost:3000';
 
-type Styles = { property: keyof CSSStyleDeclaration; value: string }[];
+type Style = { property: keyof CSSStyleDeclaration; value: string };
+type Attribute = { quorifiedName: string; value: string };
 
-const btnStyle: Styles = [
+const btnStyle: Style[] = [
   { property: 'width', value: '160px' },
   { property: 'height', value: '56px' },
   { property: 'color', value: 'red' },
@@ -13,7 +14,7 @@ const btnStyle: Styles = [
   { property: 'left', value: '80px' },
 ];
 
-const containerStyle: Styles = [
+const containerStyle: Style[] = [
   { property: 'height', value: '50%' },
   { property: 'width', value: '50%' },
   { property: 'position', value: 'absolute' },
@@ -22,20 +23,33 @@ const containerStyle: Styles = [
   { property: 'transform', value: 'translate(-50%, -50%)' },
 ];
 
-const containerHideStyle: Styles = [
+const containerHideStyle: Style[] = [
   { property: 'height', value: '0' },
   { property: 'width', value: '0' },
 ];
 
-const iframeStyle: Styles = [
+const iframeStyle: Style[] = [
   { property: 'height', value: '100%' },
   { property: 'width', value: '100%' },
   { property: 'background', value: 'white' },
 ];
 
-const setStyle = (htmlElm: HTMLElement, styles: Styles) => {
+const iframeAttr: Attribute[] = [
+  { quorifiedName: 'src', value: LOCALHOST_URL },
+  { quorifiedName: 'sandbox', value: 'allow-scripts allow-same-origin allow-modals' },
+];
+
+const btnAttr: Attribute[] = [{ quorifiedName: 'innerText', value: 'iframe 表示' }];
+
+const setStyle = (htmlElm: HTMLElement, styles: Style[]) => {
   styles.forEach((val) => {
     htmlElm.style.setProperty(String(val.property), val.value);
+  });
+};
+
+const setAttribute = (htmlElm: HTMLElement, attributes: Attribute[]) => {
+  attributes.forEach((obj) => {
+    htmlElm.setAttribute(obj.quorifiedName, obj.value);
   });
 };
 
@@ -46,8 +60,7 @@ const showIframe = () => {
 
   const iframe = document.createElement('iframe');
 
-  iframe.src = LOCALHOST_URL;
-  iframe.sandbox.value = 'allow-scripts allow-same-origin allow-modals';
+  setAttribute(iframe, iframeAttr);
 
   setStyle(iframe, iframeStyle);
 
@@ -65,16 +78,16 @@ const hideIframe = () => {
 };
 
 const shareForm = (event: MessageEvent) => {
-  const postData: PostData = event.data;
-  const inputElms = Array.from(document.getElementsByTagName('input'));
+  console.log(event);
+  // const postData: PostData = event.data;
+  // const inputElms = Array.from(document.getElementsByTagName('input'));
 
-  postData.content.forEach((val) => {
-    const elm = inputElms.find(({ id }) => id === val.id);
+  // データ駆動設計でやるべき
+  // inputElms.forEach((elm) => {
+  //   const formId: CombinedFormIds = elm.id;
 
-    if (!elm) return;
-
-    elm.value = val.value;
-  });
+  //   elm.value = postData.content[formId];
+  // });
 
   hideIframe();
 };
@@ -97,10 +110,16 @@ window.addEventListener('message', (event) => {
   iframePostActions[postData.action](event);
 });
 
+// const createHtml = (tagName: keyof HTMLElementTagNameMap) => {
+//   const elm = document.createElement(tagName);
+
+//   document.body.appendChild(elm);
+// };
+
 const btn = document.createElement('button');
 const container = document.createElement('div');
 
-btn.innerText = 'iframe 表示';
+setAttribute(btn, btnAttr);
 setStyle(btn, btnStyle);
 btn.addEventListener('click', showIframe);
 
