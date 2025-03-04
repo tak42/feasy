@@ -1,6 +1,7 @@
 const LOCALHOST_URL = 'http://localhost:3000';
 
 type Style = { property: keyof CSSStyleDeclaration; value: string };
+
 type Attribute = { quorifiedName: string; value: string };
 
 const btnStyle: Style[] = [
@@ -21,11 +22,6 @@ const containerStyle: Style[] = [
   { property: 'transform', value: 'translate(-50%, -50%)' },
 ];
 
-// const containerHideStyle: Style[] = [
-//   { property: 'height', value: '0' },
-//   { property: 'width', value: '0' },
-// ];
-
 const iframeStyle: Style[] = [
   { property: 'height', value: '100%' },
   { property: 'width', value: '100%' },
@@ -44,50 +40,32 @@ const setAttribute = (htmlElm: HTMLElement, attributes: Attribute[]) => {
   });
 };
 
-// const hideIframe = () => {
-//   const iframe = container.querySelector('iframe');
-
-//   if (!iframe) return;
-
-//   container.removeChild(iframe);
-
-//   setStyle(container, containerHideStyle);
-// };
-
 // const shareForm = (event: MessageEvent) => {
 //   console.log(event);
-//   // const postData: PostData = event.data;
-//   // const inputElms = Array.from(document.getElementsByTagName('input'));
+//   const postData: PostData = event.data;
+//   const inputElms = Array.from(document.getElementsByTagName('input'));
 
 //   // データ駆動設計でやるべき
-//   // inputElms.forEach((elm) => {
-//   //   const formId: CombinedFormIds = elm.id;
+//   inputElms.forEach((elm) => {
+//     const formId: CombinedFormIds = elm.id;
 
-//   //   elm.value = postData.content[formId];
-//   // });
+//     elm.value = postData.content[formId];
+//   });
 
-//   // hideIframe();
+//   removeHtml(containerData.attr[0].value);
 // };
 
-// const originCheck = (event: MessageEvent) => {
-//   if (!event.source) return;
-
-//   event.source.postMessage(window.location.origin, { targetOrigin: event.origin });
-// };
-
-// const iframePostActions: PostFunc = {
-//   // hide: hideIframe,
-//   share: shareForm,
-//   check: originCheck,
-// };
-
-// window.addEventListener('message', (event) => {
-//   const postData: PostData = event.data;
-
-//   iframePostActions[postData.action](event);
-// });
+window.addEventListener('message', (event) => {
+  // ここでPostDataを受け取れることが確定しているのがナンセンスな気がする
+  // const postData: PostData = event.data;
+  if ('action' in event.data === false) return;
+  if (event.data['action'] === 'hide') removeHtml(containerData.attr[0].value);
+  if (event.data['action'] === 'check' && event.source)
+    event.source.postMessage(window.location.origin, { targetOrigin: event.origin });
+});
 
 type HtmlTag = keyof HTMLElementTagNameMap;
+
 type ComponentData<T extends HtmlTag> = {
   tag: T;
   attr: Attribute[];
@@ -96,11 +74,11 @@ type ComponentData<T extends HtmlTag> = {
 
 const showIframeBtnData: ComponentData<'button'> = {
   tag: 'button',
-  attr: [{ quorifiedName: 'innerText', value: 'iframe 表示' }],
+  attr: [],
   init: (btn: HTMLButtonElement) => {
     setStyle(btn, btnStyle);
 
-    setAttribute(btn, showIframeBtnData.attr);
+    btn.innerText = 'フォーム表示';
 
     btn.addEventListener('click', () => renderHtml(containerData.tag, containerData.init));
     btn.addEventListener('click', () =>
@@ -127,10 +105,12 @@ const containerData: ComponentData<'div'> = {
   attr: [
     {
       quorifiedName: 'id',
-      value: 'abc12345',
+      value: crypto.randomUUID(),
     },
   ],
   init: (container: HTMLDivElement) => {
+    setAttribute(container, containerData.attr);
+
     setStyle(container, containerStyle);
   },
 };
@@ -159,6 +139,12 @@ const renderChildHtml = <T extends HtmlTag>(
   initFunc(elm);
 
   if (!parentElm.querySelector(tag)) parentElm.appendChild(elm);
+};
+
+const removeHtml = (id: string) => {
+  const elm = document.getElementById(id);
+
+  if (elm) document.body.removeChild(elm);
 };
 
 const init = () => {
