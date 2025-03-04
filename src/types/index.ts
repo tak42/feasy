@@ -5,7 +5,6 @@ export type AllowedOrigins = typeof ALLOWED_ORIGINS;
 
 export type CombinedFormIds = CaoInputIds;
 
-// ここは関数の戻り値がオブジェクトになるようにする
 export type GenerateDtoFunc = Record<
   AllowedOrigins[number],
   (data: SupportedValue) => Record<CombinedFormIds, string>

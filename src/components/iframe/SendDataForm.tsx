@@ -48,7 +48,6 @@ export const SendDataForm = () => {
     gender: '男性 or 女性',
   };
 
-  // どうやってサイト固有設定から適したものを特定して、入力データを親ページに送るか
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const origin: AllowedOrigins[number] | undefined = event.data;

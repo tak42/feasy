@@ -5,8 +5,6 @@ const caoInputIds = ['q1', 'q2', 'q4', 'q5', 'q6_1', 'q6_2', 'q7'] as const;
 
 export type CaoInputIds = (typeof caoInputIds)[number];
 
-// このままではfavoriteBtn.tsでは受け取れない
-// favoriteBtn.tsでこのIDの型情報を認識する
 export const generateCaoDto = (data: SupportedValue): Record<CaoInputIds, string> => {
   return {
     q1: `${data.famiryName} ${data.firstName}`,
