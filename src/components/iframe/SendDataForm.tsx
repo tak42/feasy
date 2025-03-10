@@ -88,7 +88,7 @@ export const SendDataForm = () => {
         );
       })}
       <div style={{ width: '100%', textAlign: 'right' }}>
-        <button onClick={() => postMessageToParent('check', {})} className={styles.shareBtn}>
+        <button onClick={() => postMessageToParent('check', [])} className={styles.shareBtn}>
           データ共有
         </button>
       </div>

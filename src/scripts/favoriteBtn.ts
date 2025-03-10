@@ -1,3 +1,5 @@
+import type { PostData } from '../types/Post.type';
+
 const LOCALHOST_URL = 'http://localhost:3000';
 
 type Style = { property: keyof CSSStyleDeclaration; value: string };
@@ -40,28 +42,25 @@ const setAttribute = (htmlElm: HTMLElement, attributes: Attribute[]) => {
   });
 };
 
-// const shareForm = (event: MessageEvent) => {
-//   console.log(event);
-//   const postData: PostData = event.data;
-//   const inputElms = Array.from(document.getElementsByTagName('input'));
-
-//   // データ駆動設計でやるべき
-//   inputElms.forEach((elm) => {
-//     const formId: CombinedFormIds = elm.id;
-
-//     elm.value = postData.content[formId];
-//   });
-
-//   removeHtml(containerData.attr[0].value);
-// };
-
 window.addEventListener('message', (event) => {
-  // ここでPostDataを受け取れることが確定しているのがナンセンスな気がする
-  // const postData: PostData = event.data;
   if ('action' in event.data === false) return;
+
+  const postData: PostData = event.data;
+
   if (event.data['action'] === 'hide') removeHtml(containerData.attr[0].value);
+
   if (event.data['action'] === 'check' && event.source)
     event.source.postMessage(window.location.origin, { targetOrigin: event.origin });
+
+  if (event.data['action'] === 'share') {
+    console.log(postData.content);
+
+    postData.content.forEach((dataSet) => {
+      updateInputValue(dataSet.id, dataSet.val);
+    });
+
+    removeHtml(containerData.attr[0].value);
+  }
 });
 
 type HtmlTag = keyof HTMLElementTagNameMap;
@@ -113,6 +112,27 @@ const containerData: ComponentData<'div'> = {
 
     setStyle(container, containerStyle);
   },
+};
+
+const getElementById = <T extends HTMLElement>(id: string): T | null => {
+  return document.getElementById(id) as T | null;
+};
+
+const updateInputValue = (elementId: string, newValue: string) => {
+  const input = getElementById<HTMLInputElement>(elementId);
+
+  if (!input) return console.error(`id:${elementId} Input element not found`);
+
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    'value'
+  )?.set;
+
+  if (!nativeInputValueSetter) return console.error(`id:${elementId} Failed to get value setter`);
+
+  nativeInputValueSetter.call(input, newValue);
+
+  input.dispatchEvent(new Event('input', { bubbles: true }));
 };
 
 const renderHtml = <T extends HtmlTag>(
