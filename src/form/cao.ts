@@ -1,9 +1,4 @@
-import type { SupportedValue } from '../types';
-
-// q1:氏名 q2:メアド q4:tel q5:old, q6:性別（Radio）, q7:職業
-const caoInputIds = ['q1', 'q2', 'q4', 'q5', 'q6_1', 'q6_2', 'q7'] as const;
-
-export type CaoInputIds = (typeof caoInputIds)[number];
+import type { CaoInputIds, SupportedValue } from '../types';
 
 export const generateCaoDto = (
   data: SupportedValue

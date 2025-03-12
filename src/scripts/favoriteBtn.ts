@@ -42,6 +42,7 @@ const setAttribute = (htmlElm: HTMLElement, attributes: Attribute[]) => {
   });
 };
 
+// イベントリスナーを終了後に削除する
 window.addEventListener('message', (event) => {
   if ('action' in event.data === false) return;
 
