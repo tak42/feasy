@@ -115,10 +115,6 @@ const containerData: ComponentData<'div'> = {
   },
 };
 
-const getElementById = <T extends HTMLElement>(id: string): T | null => {
-  return document.getElementById(id) as T | null;
-};
-
 const updateInputValue = (elementId: string, newValue: string) => {
   const input = getElementById<HTMLInputElement>(elementId);
 
@@ -153,7 +149,7 @@ const renderChildHtml = <T extends HtmlTag>(
   parentId: string
 ) => {
   const elm = document.createElement(tag);
-  const parentElm = document.getElementById(parentId);
+  const parentElm = getElementById<HTMLElementTagNameMap[T]>(parentId);
 
   if (!parentElm) return;
 
@@ -163,13 +159,13 @@ const renderChildHtml = <T extends HtmlTag>(
 };
 
 const removeHtml = (id: string) => {
-  const elm = document.getElementById(id);
+  const elm = getElementById(id);
 
   if (elm) document.body.removeChild(elm);
 };
 
-const init = () => {
-  renderHtml(showIframeBtnData.tag, showIframeBtnData.init);
+const getElementById = <T extends HTMLElement>(id: string): T | null => {
+  return document.getElementById(id) as T | null;
 };
 
-init();
+renderHtml(showIframeBtnData.tag, showIframeBtnData.init);
