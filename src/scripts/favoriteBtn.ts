@@ -1,8 +1,6 @@
 import type { AttributeSetting, ComponentData, HtmlTag, StyleSetting } from '../types';
 import type { PostData } from '../types/Post.type';
 
-const LOCALHOST_URL = 'http://localhost:3000';
-
 const btnStyle: StyleSetting[] = [
   { property: 'width', value: '160px' },
   { property: 'height', value: '56px' },
@@ -39,7 +37,6 @@ const setAttribute = (htmlElm: HTMLElement, attributes: AttributeSetting[]) => {
   });
 };
 
-// イベントリスナーを終了後に削除する
 window.addEventListener('message', (event) => {
   if ('action' in event.data === false) return;
 
@@ -51,8 +48,6 @@ window.addEventListener('message', (event) => {
     event.source.postMessage(window.location.origin, { targetOrigin: event.origin });
 
   if (event.data['action'] === 'share') {
-    console.log(postData.content);
-
     postData.content.forEach((dataSet) => {
       updateInputValue(dataSet.id, dataSet.val);
     });
@@ -79,7 +74,7 @@ const showIframeBtnData: ComponentData<'button'> = {
 const iframeData: ComponentData<'iframe'> = {
   tag: 'iframe',
   attr: [
-    { quorifiedName: 'src', value: LOCALHOST_URL },
+    { quorifiedName: 'src', value: 'http://localhost:3000' },
     { quorifiedName: 'sandbox', value: 'allow-scripts allow-same-origin allow-modals' },
   ],
   init: (iframe: HTMLIFrameElement) => {
