@@ -13,3 +13,15 @@ export type GenerateDtoFunc = Record<
 >;
 
 export type SupportedValue = Record<(typeof SUPPORTED_VALUES)[number], string>;
+
+export type StyleSetting = { property: keyof CSSStyleDeclaration; value: string };
+
+export type AttributeSetting = { quorifiedName: string; value: string };
+
+export type HtmlTag = keyof HTMLElementTagNameMap;
+
+export type ComponentData<T extends HtmlTag> = {
+  tag: T;
+  attr: AttributeSetting[];
+  init: (elm: HTMLElementTagNameMap[T]) => void;
+};

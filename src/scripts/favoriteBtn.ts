@@ -1,12 +1,9 @@
+import type { AttributeSetting, ComponentData, HtmlTag, StyleSetting } from '../types';
 import type { PostData } from '../types/Post.type';
 
 const LOCALHOST_URL = 'http://localhost:3000';
 
-type Style = { property: keyof CSSStyleDeclaration; value: string };
-
-type Attribute = { quorifiedName: string; value: string };
-
-const btnStyle: Style[] = [
+const btnStyle: StyleSetting[] = [
   { property: 'width', value: '160px' },
   { property: 'height', value: '56px' },
   { property: 'color', value: 'red' },
@@ -15,7 +12,7 @@ const btnStyle: Style[] = [
   { property: 'left', value: '80px' },
 ];
 
-const containerStyle: Style[] = [
+const containerStyle: StyleSetting[] = [
   { property: 'height', value: '50%' },
   { property: 'width', value: '50%' },
   { property: 'position', value: 'absolute' },
@@ -24,19 +21,19 @@ const containerStyle: Style[] = [
   { property: 'transform', value: 'translate(-50%, -50%)' },
 ];
 
-const iframeStyle: Style[] = [
+const iframeStyle: StyleSetting[] = [
   { property: 'height', value: '100%' },
   { property: 'width', value: '100%' },
   { property: 'background', value: 'white' },
 ];
 
-const setStyle = (htmlElm: HTMLElement, styles: Style[]) => {
+const setStyle = (htmlElm: HTMLElement, styles: StyleSetting[]) => {
   styles.forEach((val) => {
     htmlElm.style.setProperty(String(val.property), val.value);
   });
 };
 
-const setAttribute = (htmlElm: HTMLElement, attributes: Attribute[]) => {
+const setAttribute = (htmlElm: HTMLElement, attributes: AttributeSetting[]) => {
   attributes.forEach((obj) => {
     htmlElm.setAttribute(obj.quorifiedName, obj.value);
   });
@@ -63,14 +60,6 @@ window.addEventListener('message', (event) => {
     removeHtml(containerData.attr[0].value);
   }
 });
-
-type HtmlTag = keyof HTMLElementTagNameMap;
-
-type ComponentData<T extends HtmlTag> = {
-  tag: T;
-  attr: Attribute[];
-  init: (elm: HTMLElementTagNameMap[T]) => void;
-};
 
 const showIframeBtnData: ComponentData<'button'> = {
   tag: 'button',
